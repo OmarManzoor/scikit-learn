@@ -938,12 +938,10 @@ def _in1d(ar1, ar2, xp, assume_unique=False, invert=False):
     if ar2.shape[0] < 10 * ar1.shape[0] ** 0.145:
         if invert:
             mask = xp.ones(ar1.shape[0], dtype=xp.bool, device=device(ar1))
-            for a in ar2:
-                mask &= ar1 != a
+            mask &= xp.all(ar1[:, None] != ar2, axis=1)
         else:
             mask = xp.zeros(ar1.shape[0], dtype=xp.bool, device=device(ar1))
-            for a in ar2:
-                mask |= ar1 == a
+            mask |= xp.any(ar1[:, None] == ar2, axis=1)
         return mask
 
     if not assume_unique:
