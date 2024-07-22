@@ -205,3 +205,12 @@ _radius_neighbors_classmode = py.extension_module(
   subdir: 'sklearn/metrics/_pairwise_distances_reduction',
   install: true
 )
+py.extension_module(
+  '_mst_linkage',
+  ['_mst_linkage.pyx'],
+  dependencies: [np_dep],
+  override_options: ['cython_language=cpp'],
+  cython_args: cython_args,
+  subdir: 'sklearn/metrics/_pairwise_distances_reduction',
+  install: true
+)
