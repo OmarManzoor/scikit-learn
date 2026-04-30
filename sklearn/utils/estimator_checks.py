@@ -1170,11 +1170,7 @@ def _check_array_api_core(
                 # for mps devices the maximum supported floating dtype is float32
                 assert est_xp_param_np.dtype == np.float32
             else:
-                try:
-                    assert est_xp_param_np.dtype == attribute.dtype
-                except Exception as ex:
-                    print(f"{key} - {ex}")
-                    raise
+                assert est_xp_param_np.dtype == attribute.dtype
 
     # Check estimator methods, if supported, give the same results
     methods = (
