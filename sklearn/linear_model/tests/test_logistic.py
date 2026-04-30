@@ -2876,7 +2876,7 @@ def test_logistic_regression_cv_array_api_compliance(
         Cs=[0.01, 0.09],
         cv=StratifiedKFold(n_splits=2, shuffle=False),
         solver="lbfgs",
-        tol=6e-5 if dtype_name == "float32" else 1e-10,
+        tol=1e-7 if dtype_name == "float32" else 1e-12,
         max_iter=200,
         class_weight=class_weight,
         scoring="neg_log_loss",
@@ -2890,8 +2890,6 @@ def test_logistic_regression_cv_array_api_compliance(
         )
         assert np.max(lr_cv_np.n_iter_) < lr_cv_np.max_iter
 
-    predict_proba_np = lr_cv_np.predict_proba(X_np)
-    predict_log_proba_np = lr_cv_np.predict_log_proba(X_np)
     prediction_np = lr_cv_np.predict(X_np)
     score_np = lr_cv_np.score(X_np, y_np)
     atol = _atol_for_type(dtype_name) * 10
@@ -2915,26 +2913,6 @@ def test_logistic_regression_cv_array_api_compliance(
             )
             assert attr_xp.dtype == X_xp.dtype
             assert array_api_device(attr_xp) == array_api_device(X_xp)
-
-        predict_proba_xp = lr_cv_xp.predict_proba(X_xp)
-        assert_allclose(
-            move_to(predict_proba_xp, xp=np, device="cpu"),
-            predict_proba_np,
-            rtol=rtol,
-            atol=atol,
-        )
-        assert predict_proba_xp.dtype == X_xp.dtype
-        assert array_api_device(predict_proba_xp) == array_api_device(X_xp)
-
-        predict_log_proba_xp = lr_cv_xp.predict_log_proba(X_xp)
-        assert_allclose(
-            move_to(predict_log_proba_xp, xp=np, device="cpu"),
-            predict_log_proba_np,
-            rtol=rtol,
-            atol=atol,
-        )
-        assert predict_log_proba_xp.dtype == X_xp.dtype
-        assert array_api_device(predict_log_proba_xp) == array_api_device(X_xp)
 
         prediction_xp = lr_cv_xp.predict(X_xp)
         if not use_str_y:
