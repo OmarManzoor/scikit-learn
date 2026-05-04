@@ -2161,7 +2161,7 @@ class LogisticRegressionCV(LogisticRegression, LinearClassifierMixin, BaseEstima
             C_ = self.Cs_[best_index_int[0]]
             self.C_.append(C_)
 
-            l1_ratio_ = l1_ratios_[best_index[1]]
+            l1_ratio_ = l1_ratios_[best_index_int[1]]
             self.l1_ratio_.append(l1_ratio_)
 
             if is_binary:
