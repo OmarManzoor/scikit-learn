@@ -2876,7 +2876,7 @@ def test_logistic_regression_cv_array_api_compliance(
         Cs=[0.01, 0.001],
         cv=StratifiedKFold(n_splits=2, shuffle=False),
         solver="lbfgs",
-        tol=4e-4 if dtype_name == "float32" else 1e-10,
+        tol=5e-4 if dtype_name == "float32" else 1e-10,
         max_iter=200,
         class_weight=class_weight,
         scoring="neg_log_loss",
