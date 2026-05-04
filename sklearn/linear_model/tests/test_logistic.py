@@ -2876,7 +2876,7 @@ def test_logistic_regression_cv_array_api_compliance(
         Cs=[0.01, 0.001],
         cv=StratifiedKFold(n_splits=2, shuffle=False),
         solver="lbfgs",
-        tol=5e-4 if dtype_name == "float32" else 1e-10,
+        tol=1e-4 if dtype_name == "float32" else 1e-10,
         max_iter=200,
         class_weight=class_weight,
         scoring="neg_log_loss",
@@ -2889,6 +2889,8 @@ def test_logistic_regression_cv_array_api_compliance(
             X_np, y_np, sample_weight=sample_weight
         )
         assert np.max(lr_cv_np.n_iter_) < lr_cv_np.max_iter
+
+    assert np.abs(lr_cv_np.coef_).max() > 0.1
 
     prediction_np = lr_cv_np.predict(X_np)
     score_np = lr_cv_np.score(X_np, y_np)
